@@ -4,6 +4,7 @@ import time
 import datetime
 import calendar
 
+
 class TimerApp:
     def __init__(self, root):
         self.root = root
@@ -18,7 +19,8 @@ class TimerApp:
         self.frame.place(relx=0.5, rely=0.5, anchor="center")
 
         # Create GUI components
-        self.project_label = tk.Label(self.frame, text="Time Tracker", font=("Helvetica", 24, "bold"), anchor="center", bg="#f0f0f0")
+        self.project_label = tk.Label(self.frame, text="Time Tracker", font=("Helvetica", 24, "bold"), anchor="center",
+                                      bg="#f0f0f0")
         self.project_label.pack(pady=10)
 
         self.project_label = tk.Label(self.frame, text="Task Name", font=("Helvetica", 12), bg="#f0f0f0")
@@ -30,31 +32,32 @@ class TimerApp:
         self.button_frame = tk.Frame(self.frame, bg="#f0f0f0")
         self.button_frame.pack(pady=10)
 
-        self.start_button = tk.Button(self.button_frame, text="Start", command=self.start_timer, font=("Helvetica", 12), bg="#4CAF50", fg="#ffffff")
+        self.start_button = tk.Button(self.button_frame, text="Start", command=self.start_timer, font=("Helvetica", 12),
+                                      bg="#4CAF50", fg="#ffffff")
         self.start_button.pack(side="left", padx=5)
 
-        self.stop_button = tk.Button(self.button_frame, text="Pause", command=self.pause_timer, font=("Helvetica", 12), bg="#9b59b6", fg="#ffffff")
+        self.stop_button = tk.Button(self.button_frame, text="Pause", command=self.pause_timer, font=("Helvetica", 12),
+                                     bg="#9b59b6", fg="#ffffff")
         self.stop_button.pack(side="left", padx=5)
 
-        self.reset_button = tk.Button(self.button_frame, text="Reset", command=self.reset_timer, font=("Helvetica", 12), bg="#e74c3c", fg="#ffffff")
+        self.reset_button = tk.Button(self.button_frame, text="Reset", command=self.reset_timer, font=("Helvetica", 12),
+                                      bg="#e74c3c", fg="#ffffff")
         self.reset_button.pack(side="left", padx=5)
 
         self.elapsed_time_label = tk.Label(self.frame, text="00:00:00", font=("Helvetica", 24, "bold"), bg="#f0f0f0")
         self.elapsed_time_label.pack(pady=10)
 
-        self.save_button = tk.Button(self.frame, text="Save", command=self.save_timer_data, font=("Helvetica", 12), bg="#4CAF50", fg="#ffffff")
+        self.save_button = tk.Button(self.frame, text="Save", command=self.save_timer_data, font=("Helvetica", 12),
+                                     bg="#4CAF50", fg="#ffffff")
         self.save_button.pack(pady=5)
-
 
     def reset_timer(self):
         self.pause_timer()
         self.elapsed_time_label.config(text="00:00:00")
         self.elapsed_time = 0
 
-
     def pause_timer(self):
         self.running = False
-
 
     def start_timer(self):
         self.running = True
@@ -65,7 +68,6 @@ class TimerApp:
             self.elapsed_time += 1
             self.elapsed_time_label.config(text=time.strftime("%H:%M:%S", time.gmtime(self.elapsed_time)))
             self.root.after(1000, self.update_timer)
-
 
     def save_timer_data(self):
         try:
@@ -84,10 +86,10 @@ class TimerApp:
         if curr_month in data:
             if curr_date in data[curr_month]:
                 if curr_task in data[curr_month][curr_date]:
-                    hrs, min, sec = data[curr_month][curr_date][curr_task].split(":")
+                    hrs, minutes, sec = data[curr_month][curr_date][curr_task].split(":")
                     c_hrs, c_min, c_sec = curr_time.split(":")
                     t_hrs = int(hrs) + int(c_hrs)
-                    t_min = int(min) + int(c_min)
+                    t_min = int(minutes) + int(c_min)
                     t_sec = int(sec) + int(c_sec)
                     curr_time = str(t_hrs) + ":" + str(t_min) + ":" + str(t_sec)
                     data[curr_month][curr_date][curr_task] = curr_time
@@ -105,12 +107,13 @@ class TimerApp:
             }
 
         # add the data to the file in write mode
-        # it will create a new file if its not present
+        # it will create a new file if it's not present
         with open("data.json", "w") as file:
             json.dump(data, file, indent=4)
 
         self.reset_timer()  # reset the timer
 
-root = tk.Tk()
-app = TimerApp(root)
-root.mainloop()
+
+timer_window = tk.Tk()
+app = TimerApp(timer_window)
+timer_window.mainloop()
